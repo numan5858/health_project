@@ -107,7 +107,7 @@ public class User {
 		this.doctor = doctor;
 	}
 
-	public Doctor getDcotor() {
+	public Doctor getDoctor() {
 		return doctor;
 	}
 
