@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.example.health.model.Doctor;
 import com.example.health.model.Patient;
 import com.example.health.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,6 +28,9 @@ public class UserDetailsImpl implements UserDetails {
 	@ManyToOne(fetch = FetchType.EAGER)
     private Patient patient;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+    private Doctor doctor;
+
 
 	@JsonIgnore
 	private String password;
@@ -34,12 +38,13 @@ public class UserDetailsImpl implements UserDetails {
 	private Collection<? extends GrantedAuthority> authorities;
 
 
-	public UserDetailsImpl(Long id, String username, String password, Patient patient,
+	public UserDetailsImpl(Long id, String username, String password, Patient patient, Doctor doctor,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.patient=patient;
+		this.doctor=doctor;
 		this.authorities = authorities;
 	}
 
@@ -55,6 +60,7 @@ public class UserDetailsImpl implements UserDetails {
 				user.getUsername(),
 				user.getPassword(), 
 				user.getPatient(),
+				user.getDoctor(),
 				authorities);
 	}
 
@@ -113,6 +119,14 @@ public class UserDetailsImpl implements UserDetails {
 
 	public Patient getPatient() {
 		return patient;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+	public Doctor getDoctor() {
+		return doctor;
 	}
 
 //    public User getUser(){
