@@ -29,8 +29,7 @@ import com.example.health.model.User;
 import com.example.health.repository.UserRepository;
 import com.example.health.service.PatientServiceImpl;
 
-//= > Path -> http:localhost:8080/hms/api/patient
-//@CrossOrigin("http://localhost:4200")
+
 @RestController
 @RequestMapping(value = "/api")
 public class PatientController {
@@ -41,7 +40,7 @@ public class PatientController {
 	@Autowired
 	UserRepository userRepository;
 	
-	@PreAuthorize("hasAnyRole('ROLE_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_PATIENT')")
 	@PostMapping(value="/patient",produces = { MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE }, 
 			consumes = { MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<PatientDTO> addPatient(@RequestBody PatientDTO patientDTO) {
@@ -63,7 +62,8 @@ public class PatientController {
 			
 		return ResponseEntity.ok().body(patDTO);
 	}
-	
+
+	@PreAuthorize("hasAnyRole('ROLE_PATIENT')")
 	@PutMapping(value="/patient/{id}",produces = { MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE }, 
 			consumes = { MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<PatientDTO> updatePatient(@RequestBody PatientDTO patient,
@@ -73,13 +73,14 @@ public class PatientController {
 		return ResponseEntity.ok().body(patDTO);
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_PATIENT')")
 	@DeleteMapping(value="/patient/{id}")
 	public Map<String, Boolean> deletePatient(@PathVariable long id) throws Exception
 	{
 		return patientServiceImpl.delete(id);
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_PATIENT')")
 	@GetMapping(value="/patient/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<PatientDTO> findById(Authentication authentication,@PathVariable long id) throws Exception {
 		UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
@@ -95,6 +96,7 @@ public class PatientController {
 		return ResponseEntity.ok().body(patDTO);
 	}
 	
+	
 	@GetMapping(value="/patient")
 	public ResponseEntity<List<PatientDTO>> listAll()
 	{
@@ -102,17 +104,18 @@ public class PatientController {
 		return ResponseEntity.ok().body(patDTOList);
 	}
 	
-	@PostMapping(value = "/patient/check")
-	public ResponseEntity<Map<String, Boolean>> isExists(@RequestBody PatientDTO patient){
-		Map<String, Boolean> res = new HashMap<>();
-		if(patientServiceImpl.existsByNumber(patient)) {
-			res.put("available", Boolean.TRUE);
-		}else {
-			res.put("available", Boolean.FALSE);
-		}
+	// @PreAuthorize("hasAnyRole('ROLE_PATIENT')")
+	// @PostMapping(value = "/patient/check")
+	// public ResponseEntity<Map<String, Boolean>> isExists(@RequestBody PatientDTO patient){
+	// 	Map<String, Boolean> res = new HashMap<>();
+	// 	if(patientServiceImpl.existsByNumber(patient)) {
+	// 		res.put("available", Boolean.TRUE);
+	// 	}else {
+	// 		res.put("available", Boolean.FALSE);
+	// 	}
 		
-		return ResponseEntity.ok().body(res);
-	}
+	// 	return ResponseEntity.ok().body(res);
+	// }
 
 	
 	

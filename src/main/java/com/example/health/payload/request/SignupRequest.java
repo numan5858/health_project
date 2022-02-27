@@ -21,8 +21,8 @@ public class SignupRequest {
     @Column(name = "pname")
 	private String pName;
 
-	@Column(name = "pdob")
-	private String pDob;
+	@Column(name = "pemail")
+	private String pEmail;
 
 	@Column(name = "padd")
 	private String pAdd;
@@ -64,12 +64,12 @@ public class SignupRequest {
 		this.pName = pName;
 	}
 
-	public String getpDob() {
-		return pDob;
+	public String getpEmail() {
+		return pEmail;
 	}
 
-	public void setpDob(String pDob) {
-		this.pDob = pDob;
+	public void setpDob(String pEmail) {
+		this.pEmail = pEmail;
 	}
 
 	public String getpAdd() {

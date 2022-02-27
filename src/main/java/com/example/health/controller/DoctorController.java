@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.health.dto.DoctorDTO;
 import com.example.health.service.DoctorServiceImpl;
 
-//= > Path -> http:localhost:8080/hms/api/doctor
-//@CrossOrigin("http://localhost:4200")
+
 @RestController
 @RequestMapping(value = "/api")
 public class DoctorController {
@@ -37,6 +37,7 @@ public class DoctorController {
 		return ResponseEntity.ok().body(doc);
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_DOCTOR')")
 	@PutMapping(value = "/doctor/{id}", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
 					MediaType.APPLICATION_XML_VALUE })
@@ -47,11 +48,13 @@ public class DoctorController {
 		return ResponseEntity.ok().body(doc);
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_DOCTOR')")
 	@DeleteMapping(value = "/doctor/{id}")
 	public Map<String, Boolean> deleteDoctor(@PathVariable long id) throws Exception {
 		return docService.delete(id);
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_DOCTOR')")
 	@GetMapping(value = "/doctor/{id}", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<DoctorDTO> findById(@PathVariable long id) throws Exception {
@@ -60,21 +63,12 @@ public class DoctorController {
 		return ResponseEntity.ok().body(doc);
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_DOCTOR')")
 	@GetMapping(value = "/doctor")
 	public ResponseEntity<List<DoctorDTO>> listAll() {
 		List<DoctorDTO> doc = docService.getAll();
 		return ResponseEntity.ok().body(doc);
 	}
 	
-	@PostMapping(value = "/doctor/check")
-	public ResponseEntity<Map<String, Boolean>> existsByContactNo(@RequestBody DoctorDTO doc){
-		Map<String, Boolean> res = new HashMap<>();
-		boolean present = docService.existsByNumber(doc);
-		if(present) {
-			res.put("available", Boolean.TRUE);
-		}else {
-			res.put("available", Boolean.FALSE);
-		}
-		return ResponseEntity.ok().body(res);
-	}
+
 }

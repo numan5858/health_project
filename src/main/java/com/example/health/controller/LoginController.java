@@ -66,7 +66,7 @@ public class LoginController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-		System.out.println(loginRequest.getUsername() + " : " + loginRequest.getPassword());
+	//	System.out.println(loginRequest.getUsername() + " : " + loginRequest.getPassword());
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -125,7 +125,7 @@ public class LoginController {
 				Role patientRole = roleRepository.findByName(ERole.ROLE_PATIENT)
 				.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 		roles.add(patientRole);
-		Patient patient= new Patient(signUpRequest.getpName(),signUpRequest.getpDob(),signUpRequest.getpAdd(),signUpRequest.getpMobileNo());
+		Patient patient= new Patient(signUpRequest.getpName(),signUpRequest.getpEmail(),signUpRequest.getpAdd(),signUpRequest.getpMobileNo());
 		patientRepository.save(patient);
 // PatientDTO patientDTO= new PatientDTO(patient);
 // patientServiceImpl.save(patientDTO);
@@ -136,7 +136,7 @@ public class LoginController {
 				Role doctorRole = roleRepository.findByName(ERole.ROLE_DOCTOR)
 				.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 		roles.add(doctorRole);
-		Doctor doctor= new Doctor(signUpRequest.getpName(),signUpRequest.getpDob(),signUpRequest.getpAdd(),signUpRequest.getpMobileNo());
+		Doctor doctor= new Doctor(signUpRequest.getpName(),signUpRequest.getpEmail(),signUpRequest.getpAdd(),signUpRequest.getpMobileNo());
 		doctorRepository.save(doctor);
 		user.setDoctor(doctor);
                 break;

@@ -41,9 +41,9 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public PatientDTO save(PatientDTO patientDTO) {
-		Patient patient = convertDTOtoModel(patientDTO); // convert dto to model for database interaction
+		Patient patient = convertDTOtoModel(patientDTO); 
 		pRepo.save(patient);
-		return convertModelToDTO(patient); // return DTO
+		return convertModelToDTO(patient); 
 	}
 
 	@Override
@@ -59,10 +59,10 @@ public class PatientServiceImpl implements PatientService {
 
 		Patient pat = convertDTOtoModel(cpyPat);
 
-		// step 2
+		
 		pRepo.save(pat);
 
-//		step 3
+
 		return convertModelToDTO(pat);
 	}
 
